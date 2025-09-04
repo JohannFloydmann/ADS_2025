@@ -52,7 +52,12 @@ class Stack{
         }
 
         bool isEmpty(){
-            return (top == -1);
+            if(top >= 0){
+                return false;
+            }
+            else {
+                return true;
+            }
         }
 
         void print(){
@@ -77,18 +82,26 @@ int main() {
     {
         int num;
         cin >> num;
-        if (num > s.getTop())
+        out[i] = -1;
+        do
         {
-            
-        }
-        
-        if (s.isEmpty())
-        {
-            out[i] == -1;
-        }
-        
+            if(s.isEmpty()){
+                s.push(num);
+                break;
+            }
+            else if (s.getTop() <= num){
+                out[i] = s.getTop();
+                s.push(num);
+                break;
+            }
+            else s.pop();
+        }while (true);
+
     }
     
+    for (int i = 0; i < n; i++){
+        cout << out[i] << ' ';
+    }
     
     return 0;
 }
