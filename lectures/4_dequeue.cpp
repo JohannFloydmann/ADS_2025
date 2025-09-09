@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-class Queue
+class Dequeue
 {
 private:
     int *data;
@@ -12,7 +12,7 @@ private:
     bool empty;
 
 public:
-    Queue(int size)
+    Dequeue(int size)
     {
         data = new int[size];
         this->size = size;
@@ -24,12 +24,12 @@ public:
         empty = true;
     }
 
-    ~Queue()
+    ~Dequeue()
     {
         delete[] data;
     }
 
-    void enqueue(int value)
+    void back_enqueue(int value)
     {
         empty = false;
 
@@ -55,7 +55,31 @@ public:
         }
     }
 
-    int dequeue()
+    void front_enqueue(int value)
+    {
+        empty = false;
+
+        if (!full)
+        {
+            if(head == 0){
+                head = size-1;
+            }
+            else{
+                head--;
+            }
+            data[head] = value;
+
+            if(head == tail){
+                full = true;
+            }
+        }
+        else
+        {
+            cout << "queue is full" << endl;
+        }
+    }
+
+    int front_dequeue()
     {
         full = false;
 
@@ -74,6 +98,34 @@ public:
             }
             if (tail == head)
             {
+                empty = true;
+            }
+        }
+        else
+        {
+            cout << "the queue is empty" << endl;
+        }
+        return x;
+    }
+
+    int back_dequeue()
+    {
+        full = false;
+
+        int x = INT_MIN;
+
+        if (!empty)
+        {
+            if (tail == 0)
+            {
+                tail = size-1;
+            }
+            else{
+                tail--;
+            }
+            x = data[tail];
+
+            if(tail == head){
                 empty = true;
             }
         }
