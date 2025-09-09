@@ -157,10 +157,10 @@ public:
 
 int main()
 {
-    Queue s(10);
-    s.enqueue(1);
-    s.enqueue(2);
-    s.enqueue(3);
-    s.print();
+    Dequeue deq(6);
+
+    deq.front_enqueue(1);
+    deq.back_enqueue(2);
+    deq.print();
     return 0;
 }

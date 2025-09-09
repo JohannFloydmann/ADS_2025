@@ -1,0 +1,80 @@
+#include <iostream>
+using namespace std;
+
+class Node
+{
+private:
+    Node* next;
+    Node* prev;
+    int data;
+
+public:
+    Node(int value){
+        next = NULL;
+        prev = NULL;
+        data = value;
+    }
+
+    void setNext(Node* a){
+        next = a;
+    }
+
+    void setPrev(Node* a){
+        prev = a;
+    }
+
+    Node* getNext(){
+        return next;
+    }
+
+    Node* getPrev(){
+        return prev;
+    }
+
+    int print(){
+        return data;
+    }
+
+};
+
+class Linked_list
+{
+private:
+    Node* head;
+    Node* tail;
+
+public:
+    Linked_list(){
+        head = nullptr;
+        tail = nullptr;
+    }
+    Linked_list(Node* first){
+        head = first;
+        tail = first;
+    }
+    void insert_tail(Node* node){
+        tail->setNext(node);
+        node->setPrev(tail);
+        tail = node;
+    }
+
+    void delete_head(){
+        Node* next_node = head->getPrev();
+        head->getNext() -> setPrev(nullptr);
+        head = next_node;
+    }
+
+    void print(){
+        Node* curr = head;
+        while(curr){
+            cout << curr->print() << ' ';
+            curr = curr->getNext();
+        }
+    }
+};
+
+int main()
+{
+
+    return 0;
+}
