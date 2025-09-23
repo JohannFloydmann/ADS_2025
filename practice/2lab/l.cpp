@@ -2,16 +2,44 @@
 using namespace std;
 
 template <typename T>
-class Node {
-public:
-    T data;
+class Node
+{
+private:
     Node<T> *next;
     Node<T> *prev;
 
-    Node(T value) {
-        data = value;
+public:
+    T data;
+    Node(T value)
+    {
         next = nullptr;
         prev = nullptr;
+        data = value;
+    }
+
+    void setNext(Node<T> *a)
+    {
+        next = a;
+    }
+
+    void setPrev(Node<T> *a)
+    {
+        prev = a;
+    }
+
+    Node<T> *getNext()
+    {
+        return next;
+    }
+
+    Node<T> *getPrev()
+    {
+        return prev;
+    }
+
+    T print()
+    {
+        return data;
     }
 };
 
@@ -30,6 +58,62 @@ public:
     }
 
     bool isEmpty() { return size == 0; }
+
+    void insert_tail(T value)
+    {
+        if (head == nullptr && tail == nullptr)
+        {
+            Node<T> *first = new Node<T>(value);
+            head = first;
+            tail = first;
+        }
+        else
+        {
+            Node<T> *node = new Node<T>(value);
+            tail->setNext(node);
+            node->setPrev(tail);
+            tail = node;
+        }
+        size++;
+    }
+
+    void insert_head(T value)
+    {
+        if (head == nullptr && tail == nullptr)
+        {
+            Node<T> *first = new Node<T>(value);
+            head = first;
+            tail = first;
+        }
+        else
+        {
+            Node<T> *node = new Node<T>(value);
+            head->setPrev(node);
+            node->setNext(head);
+            head = node;
+        }
+        size++;
+    }
+
+    T getHead()
+    {
+        if (this->isEmpty())
+        {
+            return "error";
+        }
+
+        return head->data;
+    }
+
+    T getTail()
+    {
+        if (this->isEmpty())
+        {
+            return "error";
+        }
+
+        return tail->data;
+    }
 
     void insert(T value, int pos) {
         Node<T> *newNode = new Node<T>(value);
@@ -142,6 +226,20 @@ public:
         }
     }
 
+    int findMaxSum(){
+        Node<T> *curr = head;
+        int currSum = curr->data;
+        int maxSum = currSum;
+
+        for (int i = 0; i < this->size-1; i++)
+        {
+            curr = curr->getNext();
+            currSum = max(currSum + curr->print(), curr->print());
+            maxSum = max(currSum, maxSum);
+        }
+        return maxSum;
+    }
+
     void print() {
         if (isEmpty()) {
             cout << -1 << endl;
@@ -158,30 +256,16 @@ public:
 
 int main() {
     Linked_list<int> lt;
-    while (true) {
-        int command; 
-        cin >> command;
-        if (command == 0) break;
-        else if (command == 1) {
-            int x, p; cin >> x >> p;
-            lt.insert(x, p);
-        } else if (command == 2) {
-            int p; cin >> p;
-            lt.remove(p);
-        } else if (command == 3) {
-            lt.print();
-        } else if (command == 4) {
-            int p1, p2; cin >> p1 >> p2;
-            lt.replace(p1, p2);
-        } else if (command == 5) {
-            lt.reverse();
-        } else if (command == 6) {
-            int x; cin >> x;
-            lt.cyclic_left(x);
-        } else if (command == 7) {
-            int x; cin >> x;
-            lt.cyclic_right(x);
-        }
+    
+    int num;
+    cin >> num;
+
+    for (int i = 0; i < num; i++)
+    {
+        int temp;
+        cin >> temp;
+        lt.insert_tail(temp);
     }
+    cout << lt.findMaxSum();
     return 0;
 }
