@@ -2,6 +2,9 @@
 using namespace std;
 
 #include <iostream>
+using namespace std;
+
+#include <iostream>
 #include <climits>
 using namespace std;
 
@@ -30,6 +33,10 @@ public:
     ~Queue()
     {
         delete[] data;
+    }
+
+    T top(){
+        return data[head];
     }
 
     void enqueue(T value)
@@ -95,6 +102,43 @@ public:
         empty = true;
     }
 
+    void sort()
+    {
+        if (empty)
+        {
+            return;
+        }
+
+        int count = 0;
+        if (head <= tail)
+        {
+            count = tail - head;
+        }
+        else
+        {
+            count = size - head + tail;
+        }
+
+        for (int i = 0; i < count - 1; i++)
+        {
+            for (int j = 0; j < count - 1 - i; j++)
+            {
+                int idx1 = (head + j) % size;
+                int idx2 = (head + j + 1) % size;
+                if (data[idx1] < data[idx2])
+                {
+                    T temp = data[idx1];
+                    data[idx1] = data[idx2];
+                    data[idx2] = temp;
+                }
+            }
+        }
+        tail = (head + count) % size;
+        empty = (count == 0);
+        full = (count == size);
+    }
+
+
     void print()
     {
         if (empty)
@@ -120,12 +164,38 @@ public:
     }
 };
 
-int main()
-{
-    Queue<int> s(10);
-    s.enqueue(1);
-    s.enqueue(2);
-    s.enqueue(3);
-    s.print();
+int main(){
+    int n;
+    cin >> n;
+    int arr[1000];
+    for (int i = 0; i < 1000; i++)
+    {
+        arr[i] = 0;
+    }
+    
+    Queue<int> q(1000);
+
+    int currModeCount = 0;
+    for (int i = 0; i < n; i++)
+    {
+        int temp;
+        cin >> temp;
+        arr[temp] = arr[temp]+1;
+        if (arr[temp] == currModeCount)
+        {
+            q.enqueue(temp);
+        }
+
+        if (arr[temp] > currModeCount)
+        {
+            currModeCount = arr[temp];
+            q.emptyQueue();
+            q.enqueue(temp);
+        }
+        
+    }
+    q.sort();
+    q.print();
+
     return 0;
 }

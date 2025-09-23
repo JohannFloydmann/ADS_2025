@@ -28,6 +28,10 @@ public:
         data[top] = value;
     }
 
+    T getTop(){
+        return data[top];
+    }
+
     T pop() {
         if (empty()) {
             cout << "Stack is empty" << endl;
@@ -37,16 +41,41 @@ public:
         return data[top + 1];
     }
 
+    void print() {
+        if (empty()) {
+            return;
+        }
+        for (int i = top; i >= 0; i--) {
+            cout << data[i] << endl;
+        }
+    }
+
     bool empty() {
         return top == -1;
     }
 };
 
 int main() {
-    Stack<int> s(10);
-    s.push(5);  
-    s.push(10);
-    cout << s.pop() << endl;
-    cout << s.pop() << endl;
+    int num;
+    cin >> num;
+    int count = 0;
+    Stack<string> s(1000);
+
+    for (int i = 0; i < num; i++)
+    {
+        string name;
+        cin >> name;
+        while(name == s.getTop()){
+            s.pop();
+            count--;
+        }
+        s.push(name);
+        count++;
+    }
+
+    cout << "All in all: " << count << endl;
+    cout << "Students:" << endl;
+    s.print();
+    
     return 0;
 }

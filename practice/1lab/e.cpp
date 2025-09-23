@@ -1,28 +1,27 @@
 #include <iostream>
 using namespace std;
 
-#include <iostream>
-#include <climits>
-using namespace std;
 
-template <typename T>
 class Queue
 {
 private:
-    T *data;
+    int *data;
     int size;
     int head;
     int tail;
     bool full;
-    bool empty;
 
 public:
-    Queue(int size)
+    bool empty;
+    Queue(int GivenSize)
     {
-        data = new T[size];
+        size = GivenSize *2;
+        data = new int[size];
         this->size = size;
+
         head = 0;
         tail = 0;
+
         full = false;
         empty = true;
     }
@@ -32,7 +31,7 @@ public:
         delete[] data;
     }
 
-    void enqueue(T value)
+    void enqueue(int value)
     {
         empty = false;
 
@@ -58,11 +57,15 @@ public:
         }
     }
 
-    T dequeue()
+    int getTop(){
+        return data[head];
+    }
+
+    int dequeue()
     {
         full = false;
 
-        T x; // Default-constructed T (avoids INT_MIN for non-int types)
+        int x = -2147483647;
 
         if (!empty)
         {
@@ -87,26 +90,13 @@ public:
         return x;
     }
 
-    void emptyQueue()
-    {
-        head = 0;
-        tail = 0;
-        full = false;
-        empty = true;
-    }
-
     void print()
     {
-        if (empty)
-        {
-            cout << "Queue is empty" << endl;
-            return;
-        }
-
         int i = head;
         while (i != tail)
         {
             cout << data[i] << ' ';
+
             if (i == size - 1)
             {
                 i = 0;
@@ -116,16 +106,69 @@ public:
                 i++;
             }
         }
-        cout << endl;
     }
 };
 
-int main()
-{
-    Queue<int> s(10);
-    s.enqueue(1);
-    s.enqueue(2);
-    s.enqueue(3);
-    s.print();
+void Won(Queue &q, int b, int n, string name){
+    q.enqueue(b);
+    q.enqueue(n);
+}
+
+int main() {
+    Queue boris(5);
+    Queue nurik(5);
+    unsigned int count = 0;
+
+    for (int i = 0; i < 5; i++)
+    {
+        int temp;
+        cin >> temp;
+        boris.enqueue(temp);
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        int temp;
+        cin >> temp;
+        nurik.enqueue(temp);
+    }
+    
+    while (!boris.empty && !nurik.empty)
+    {
+        count++;
+        if(count >= 1000000){
+            cout << "blin nichya";
+            return 0;
+        }
+        int b = boris.dequeue();
+        int n = nurik.dequeue();
+        
+        if (b == 0 && n == 9)
+        {
+            Won(boris, b, n, "Boris");
+        }
+        else if (b == 9 && n == 0){
+            Won(nurik, b, n, "Nurik");
+        }
+        else if (b>n)
+        {
+            Won(boris, b, n, "Boris");
+        }
+        else{
+            Won(nurik, b, n, "Nurik");
+        }
+        
+        
+        
+    }
+    
+    if(nurik.empty){
+        cout << "Boris" << ' ' << count;
+    }
+    else if(boris.empty){
+        cout << "Nursik" << ' ' << count;
+    }
+
+
     return 0;
 }
