@@ -1,6 +1,10 @@
 #include <iostream>
 using namespace std;
 
+#include <iostream>
+#include <climits>
+using namespace std;
+
 template <typename T>
 class Queue
 {
@@ -111,10 +115,35 @@ public:
 
 int main()
 {
-    Queue<int> s(10);
-    s.enqueue(1);
-    s.enqueue(2);
-    s.enqueue(3);
-    s.print();
+    int cases;
+    cin >> cases;
+    for (int i = 0; i < cases; i++)
+    {
+        int num;
+        cin >> num;
+        int freq[1000] = {0};
+        Queue<char> q(num);
+        for (int i = 0; i < num; i++)
+        {
+            char ch;
+            cin >> ch;
+            freq[int(ch)] = freq[int(ch)] + 1;
+            q.enqueue(ch);
+
+            while(!q.empty && freq[q.getTop()] > 1){
+                q.dequeue();
+            }
+
+            if (q.empty)
+            {
+                cout << -1 << " ";
+            }
+            else{
+                cout << char(q.getTop()) << ' ';
+            }
+        }
+        cout << endl;
+    }
+    
     return 0;
 }
