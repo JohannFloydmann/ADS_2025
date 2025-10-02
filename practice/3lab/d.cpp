@@ -1,5 +1,4 @@
-#include <iostream>
-#include <algorithm>  
+#include <iostream>  
 using namespace std;
 
 int arraySize, numQueries;
