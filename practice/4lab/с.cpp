@@ -157,6 +157,16 @@ public:
         }
     }
 
+    void printSubtree(Node *node){
+        if (node)
+        {
+            cout << node->getData() << ' ';
+            printSubtree(node->getLeft());
+            printSubtree(node->getRight());
+        }
+        
+    }
+
     void print()
     {
         inOrderTreeWalk(root);
@@ -222,29 +232,6 @@ public:
         return current;
     }
 
-    bool canWalk(string path)
-    {
-        Node *curr = root;
-        for (int i = 0; i < path.length(); i++)
-        {
-            if (path[i] == 'L')
-            {
-                if (curr->getLeft())
-                    curr = curr->getLeft();
-                else
-                    return false;
-            }
-            else if (path[i] == 'R')
-            {
-                if (curr->getRight())
-                    curr = curr->getRight();
-                else
-                    return false;
-            }
-        }
-        return true;
-    }
-
     void deleteNode(Node *z)
     {
         if (z->getLeft() == NULL)
@@ -275,8 +262,8 @@ public:
 int main()
 {
 
-    int n, t;
-    cin >> n >> t;
+    int n;
+    cin >> n;
 
     BST b;
 
@@ -287,14 +274,7 @@ int main()
         b.insert(temp);
     }
 
-    string paths[t];
-    for (int i = 0; i < t; i++)
-    {
-        cin >> paths[i];
-    }
-
-    for (int i = 0; i < t; i++)
-    {
-        cout << (b.canWalk(paths[i]) ? "YES" : "NO") << endl;
-    }
+    int find;
+    cin >> find;
+    b.printSubtree(b.searchByKey(find));
 }
