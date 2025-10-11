@@ -4,7 +4,7 @@ using namespace std;
 class Heap
 {
 private:
-    long long* arr;
+    long long *arr;
     long long heapSize;
     long long arrSize;
 
@@ -23,10 +23,10 @@ private:
     }
 
 public:
-    Heap(long long heapSize)
+    Heap(long long heapSize, long long arrSize)
     {
         this->heapSize = heapSize;
-        this->arrSize = 1000000;
+        this->arrSize = arrSize;
         this->arr = new long long[arrSize];
     }
     ~Heap()
@@ -57,29 +57,33 @@ public:
         }
     }
 
-    void buildHeap(long long *arr, long long n){
+    void buildHeap(long long *arr, long long n)
+    {
         for (long long i = 0; i < n; i++)
         {
             insert(arr[i]);
         }
-        
     }
 
-    void insert(long long value)
-    {   
-        heapSize++;
-        arr[heapSize - 1] = value;
-        unHeapify(heapSize - 1);
+    void insert(long long value) {
+        if (heapSize < arrSize) {
+            arr[heapSize] = value;
+            heapSize++;
+            unHeapify(heapSize - 1);
+        } else if (value > arr[0]) {
+            arr[0] = value;
+            heapify(0);
+        }
     }
 
     void changeValue(long long value, long long i)
     {
         if (value > arr[i])
             arr[i] = value;
-            heapify(i);
+        heapify(i);
         if (value < arr[i])
             arr[i] = value;
-            unHeapify(i);
+        unHeapify(i);
     }
 
     long long deleteRoot()
@@ -96,20 +100,33 @@ public:
         return ans;
     }
 
-    void printSorted(){
-        while(heapSize > 0){
+    void printSorted()
+    {
+        while (heapSize > 0)
+        {
             cout << arr[0] << ' ';
-            swap(arr[0], arr[heapSize-1]);
+            swap(arr[0], arr[heapSize - 1]);
             heapSize--;
             heapify(0);
         }
     }
-    long long getSize(){
+    long long getSize()
+    {
         return heapSize;
     }
 
-    long long getHead(){
+    long long getHead()
+    {
         return arr[0];
+    }
+
+    long long getSum(){
+        int sum = 0;
+        for (int i = 0; i < heapSize; i++)
+        {
+            sum += arr[i];
+        }
+        return sum;
     }
 
     void printHeap()
@@ -122,33 +139,32 @@ public:
     }
 };
 
+int absVal(int n)
+{
+    return n < 0 ? -n : n;
+}
+
 int main()
 {
-    Heap h(0);
-    long long n, m;
-    cin >> n >> m;
-    long long arr[n];
-    for (long long i = 0; i < n; i++)
-    {
-        cin >> arr[i];
-    }
+    long long q, k;
+    cin >> q >> k;
+    Heap h(0, k);
 
-    h.buildHeap(arr, n);
-    long long ans = 0;
-    while(h.getHead() < m)
+    for (int i = 0; i < q; i++)
     {
-        long long last = h.deleteRoot();
-        if (h.getSize() <= 0)
+        string command;
+        cin >> command;
+        if (command == "print")
         {
-            ans = -1;
-            break;
+            cout << h.getSum() << endl;
         }
-        long long prelast =  h.deleteRoot();
-        h.insert(last + 2*prelast);
-        ans++;
+        else
+        {
+            int num;
+            cin >> num;
+            h.insert(num);
+        }
     }
-    
-    cout << ans;
 
     return 0;
 }
