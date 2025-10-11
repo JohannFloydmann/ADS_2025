@@ -4,133 +4,118 @@ using namespace std;
 class Heap
 {
 private:
-    int *arr;
-    int heap_size;
-    int arr_size;
+    int* arr;
+    int heapSize;
+    int arrSize;
 
-    // helper:
-    int left(int i)
-    {
-        return i * 2 + 1;
-    }
-    int right(int i)
-    {
-        return i * 2 + 2;
-    }
-    int parent(int i)
-    {
-        return (i - 1) / 2;
-    }
 
+    //helper funcs:
+    int left(int i){
+        return 2*i+1;
+    }
+    int right(int i){
+        return 2*i+2;
+    }
+    int parent(int i){
+        return (i-1)/2;
+    }
 public:
-    // empty array
-    Heap(int heap_size, int arr_size)
-    {
-        arr = new int[arr_size];
-        this->arr_size = arr_size;
-        this->heap_size = heap_size;
-    }
+    Heap(int* newArr, int heapSize, int arrSize){
+        this->heapSize = heapSize;
+        this->arrSize = arrSize;
+        arr = new int[arrSize];//warning -- DMA
 
-    // if we have an array
-    Heap(int *user_arr, int heap_size, int arr_size)
-    {
-        arr = user_arr;
-        this->arr_size = arr_size;
-        this->heap_size = heap_size;
+        for (int i = 0; i < arrSize; i++)
+        {
+            arr[i] = newArr[i];
+        }
     }
-
-    ~Heap()
-    {
+    ~Heap(){
         delete[] arr;
     }
 
-    void print()
-    {
-        for (int i = 0; i < heap_size; i++)
+
+    void printArray(){
+        for (int i = 0; i < arrSize; i++)
         {
-            cout << arr[i] << ' ';
+            cout<<arr[i]<<" ";
         }
-        cout << endl;
+        cout<<endl;
     }
 
-    void heapify(int i)
-    {
-        if (i < heap_size - 1 && right(i) < heap_size)
-        {
-
-            int largest_index = i; // between i and its children
-            if (arr[left(i)] > arr[largest_index])
-            {
-                largest_index = left(i);
-            }
-            if (arr[right(i)] > arr[largest_index])
-            {
-                largest_index = right(i);
-            }
-            if (largest_index != i)
-            {
-                swap(arr[largest_index], arr[i]);
-            }
-
+    void heapify(int i){
+        int largest_index = i;
+        if(arr[left(i)]>arr[largest_index] && left(i)<heapSize){
+            largest_index = left(i); 
+        }
+        if(arr[right(i)]>arr[largest_index] && right(i)<heapSize){
+            largest_index = right(i);
+        }
+        swap(arr[largest_index],arr[i]);
+        if(largest_index!=i){//if swapped
             heapify(largest_index);
         }
     }
 
-    void buildHeap()
-    {
-        for (int i = (heap_size - 2) / 2; i >= 0; i--)
+    void buildHeap(){
+        for (int i = (heapSize-2)/2; i>=0; i--)
         {
             heapify(i);
         }
     }
 
-    void heapSort()
-    {
-        buildHeap();
-        int max_value = arr[0];
-        while (heap_size > 0)
-        {
-            swap(arr[0], arr[heap_size - 1]);
-            heap_size--;
+    void heapSort(){
+        buildHeap();//max -- arr[0]
+        while(heapSize>0){
+            swap(arr[0],arr[heapSize-1]);
+            heapSize--;
             heapify(0);
         }
     }
 
-    void unheapify(int i)
-    {
-        if (i > 0)
+    void printHeap(){
+        for (int i = 0; i < heapSize; i++)
         {
-            if (arr[parent(i)] < arr[i])
-            {
-                swap(arr[parent(i)], arr[i]);
-            }
+            cout<<arr[i]<<" ";
+        }
+    }
+
+    void unheapify(int i){
+        if(parent(i)>=0 && arr[parent(i)]<arr[i]){
+            swap(arr[parent(i)],arr[i]);
             unheapify(parent(i));
         }
     }
 
-    void insert(int n){
-        heap_size++;
-        arr[heap_size-1] = n;
-        unheapify(heap_size-1);
+    void changeVal(int changedVal, int i){
+        arr[i] = changedVal;
+        unheapify(i);
     }
 
-    void del(int i){
+    void insertInHeap(int newVal){
+        heapSize++;
+        arr[heapSize-1] = newVal;
+        unheapify(heapSize-1);
+    }
+
+    void deleteInHeap(int i){
         arr[i] = INT_MIN;
-        heapify(i);
-        heap_size--;
+        swap(arr[0],arr[heapSize-1]);
+        heapify(0);
+        heapSize--;
     }
 };
 
-int main()
-{
-    int arr[7] = {1, 2, 4, 3, 5, 8, 9};
 
-    Heap h1(arr, 7, 7);
-    
+
+
+int main(){
+    int arr[8] = {0,6,5,3,2,5,8,10};
+    Heap h1(arr,8,100);//arrsize>=heapsize
+
     h1.buildHeap();
-    h1.insert(10);
-    h1.heapSort();
-    h1.print();
 
-    return 0;
+    h1.deleteInHeap(0);
+
+    h1.printHeap();
 }
