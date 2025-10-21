@@ -1,13 +1,16 @@
 #include <iostream>
 using namespace std;
+long long abs_val(long long n){
+    return n >= 0 ? n : n * -1;
+}
 
-void merge(int *arr, int beg, int mid, int end){
+void merge(long long *arr, int beg, int mid, int end){
     int left_len = mid - beg + 1;
     int right_len = end - mid;
-    int* left = new int[left_len];
-    int* right = new int[right_len];
+    long long* left = new long long[left_len];
+    long long* right = new long long[right_len];
     
-    for (int i = 0; i <= left_len; i++)
+    for (int i = 0; i < left_len; i++)
     {
         left[i] = arr[beg + i];
     }
@@ -38,7 +41,7 @@ void merge(int *arr, int beg, int mid, int end){
     delete[] right;
 }
 
-void merge_sort_rec(int *arr, int beg, int end){
+void merge_sort_rec(long long *arr, int beg, int end){
     if (beg < end)
     {
         int mid = (beg + end)/2;
@@ -48,22 +51,38 @@ void merge_sort_rec(int *arr, int beg, int end){
     }
 }
 
-void merge_sort(int *arr, int len){
+void merge_sort(long long *arr, int len){
     merge_sort_rec(arr, 0, len-1);
 }
 
 int main(){
-    int arr[] = {5, 6, 3, 1, 2, 8, 9};
+    unsigned int n;
+    cin >> n;
 
-    int len = 7;
-
-    merge_sort(arr, len);
-
-    for (int i = 0; i < len; i++)
+    long long arr[n];
+    for (int i = 0; i < n; i++)
     {
-        cout << arr[i] << ' ';
+        int temp;
+        cin >> temp;
+        arr[i] = temp;
+    }
+
+    merge_sort(arr, n);
+    long long minDiff = arr[n-1] - arr[0];
+    for (int i = 1; i < n; i++)
+    {
+        long long diff = arr[i] - arr[i-1];
+        if(diff < minDiff) {
+            minDiff = diff;
+        }
     }
     
-
+    for (int i = 1; i < n; i++)
+    {
+        if(arr[i] - arr[i-1] == minDiff) {
+            cout << arr[i-1] << ' ' << arr[i] << ' ';
+        }
+    }
+    
     return 0;
 }
