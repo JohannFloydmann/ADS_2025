@@ -7,7 +7,7 @@ void merge(int *arr, int beg, int mid, int end){
     int* left = new int[left_len];
     int* right = new int[right_len];
     
-    for (int i = 0; i <= left_len; i++)
+    for (int i = 0; i < left_len; i++)
     {
         left[i] = arr[beg + i];
     }
