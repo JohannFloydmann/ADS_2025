@@ -1,6 +1,47 @@
 #include <iostream>
 using namespace std;
 
+void merge(string &a, int beg, int mid, int end){
+    int left_len = mid - beg + 1;
+    int right_len = end - mid;
+    string left = a.substr(beg, left_len);
+    string right = a.substr(mid+1, right_len);
+
+    int i = 0;
+    int j = 0;
+    int k = beg;
+    while (k <= end)
+    {
+        if ((i < left_len) && (j >= right_len ||
+            int(left[i]) < int(right[j])))
+        {
+            a[k] = left[i];
+            i++;
+            k++;
+        }
+        else{
+            a[k] = right[j];
+            j++;
+            k++;
+        }
+    }
+}
+
+void mergeSort_rec(string &a, int beg, int end){
+    if (beg < end)
+    {
+        int mid = (beg + end)/2;
+        mergeSort_rec(a, beg, mid);
+        mergeSort_rec(a, mid+1, end);
+        merge(a, beg, mid, end);
+    }
+}
+
+void mergeSort(string &a){
+    mergeSort_rec(a, 0, a.length()-1);
+}
+
+
 char vowels[] = {'a', 'e', 'i', 'o', 'u'};
 bool inVowels(char a){
     int left = 0;
@@ -40,6 +81,11 @@ int main(){
         else cons.push_back(str[i]);
     }
     
+    mergeSort(vowels);
+    mergeSort(cons);
+
+    cout << vowels << cons;
+
     
     return 0;
 }
