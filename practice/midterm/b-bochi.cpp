@@ -18,8 +18,11 @@ int main() {
         if (elements.size() < k) {
             cout << "Bocchi\n";
         } else {
-            auto it = elements.begin();
-            advance(it, elements.size() - k);
+            multiset<int>::iterator it = elements.begin();
+            for (int i = 0; i < elements.size()-k; i++)
+            {
+                it++;
+            }
             cout << *it << "\n";
         }
     }
