@@ -202,6 +202,17 @@ private:
         return value % size;
     }
 
+    int rolling_hashing(string s){
+        int l = s.size();
+        int h = (int)s[0]-((int)'a'-1);
+        int pow = 26; 
+        for (int i = 1; i<l;i++)
+        {
+            h = ((h*pow)%size+((int)s[i]-((int)'a'-1)))%size;
+        }
+        return h;
+    }
+
 public:
     HashTable(int m)
     {
