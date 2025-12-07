@@ -242,7 +242,7 @@ int main(){
     abc.insertEdge(2,4);
     abc.insertEdge(2,3);
     abc.insertEdge(3,4);
-
+    abc.print();
     abc.bfs(5);
 
     abc.shortedPath(4);
